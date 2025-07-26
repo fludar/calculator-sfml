@@ -1,5 +1,68 @@
 ﻿#include <SFML/Graphics.hpp>
 
+void Equal(std::string& calcTextStr){
+
+	for (int i = 0; i < calcTextStr.size(); i++)
+	{
+        switch (calcTextStr[i]) {
+        case '/':
+            calcTextStr = "division";
+			return;
+		case '*':
+			calcTextStr = "multiplication";
+			return;
+		case '-':
+			calcTextStr = "subtraction";
+			return;
+		case '+':
+			calcTextStr = "addition";
+			return;
+        }
+	}
+}
+
+void handleButtonPress(
+    sf::RenderWindow& window,
+    sf::RectangleShape& button,
+    const std::vector<sf::Keyboard::Key>& keys,
+    const sf::Color& activeColor,
+    const sf::Color& defaultColor,
+    std::string& calcTextStr,
+    const std::string& buttonValue)
+{
+    static std::unordered_map<std::string, bool> wasPressed;
+
+    bool isKeyPressed = std::any_of(keys.begin(), keys.end(), [](sf::Keyboard::Key key) {
+        return sf::Keyboard::isKeyPressed(key);
+        });
+
+    bool isMousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) &&
+        button.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+
+    if ((isKeyPressed || isMousePressed) && !wasPressed[buttonValue]) {
+        button.setFillColor(activeColor);
+
+        if (buttonValue == "AC") {
+            calcTextStr.clear();
+        }
+        else if (buttonValue == "←") {
+        if (!calcTextStr.empty()) {
+            calcTextStr.pop_back();
+            }
+        }
+        else if (buttonValue == "=") {
+            Equal(calcTextStr);
+        }
+        else calcTextStr += buttonValue; 
+        wasPressed[buttonValue] = true;
+    }
+    else if (!isKeyPressed && !isMousePressed) {
+        button.setFillColor(defaultColor);
+        wasPressed[buttonValue] = false; 
+    }
+}
+
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({ 300, 500 }), "Calculator", sf::Style::Close);
@@ -13,11 +76,12 @@ int main()
 
     const sf::Font font("FjallaOne-Regular.ttf");
 
+
+    std::string calcTextStr = "";
     sf::Text calcText(font);
 	sf::Color calcTextColor(57, 91, 80, 255);
     calcText.setCharacterSize(60);
     calcText.setStyle(sf::Text::Regular);
-	calcText.setString("5*5");
 	calcText.setFillColor(calcTextColor);
 	calcText.setPosition(sf::Vector2f(0.0f + padding.x, 0.0f + padding.y));
 
@@ -104,113 +168,27 @@ int main()
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
+	    calcText.setString(calcTextStr);
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad7) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[0].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[0].setFillColor(calcTextColor);
-		else
-			buttons[0].setFillColor(btnColor);
-        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num8) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad8) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[1].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[1].setFillColor(calcTextColor);
-        else 
-			buttons[1].setFillColor(btnColor);
+        handleButtonPress(window, buttons[0], { sf::Keyboard::Key::Num7, sf::Keyboard::Key::Numpad7 }, calcTextColor, btnColor, calcTextStr, "7");
+        handleButtonPress(window, buttons[1], { sf::Keyboard::Key::Num8, sf::Keyboard::Key::Numpad8 }, calcTextColor, btnColor, calcTextStr, "8");
+        handleButtonPress(window, buttons[2], { sf::Keyboard::Key::Num9, sf::Keyboard::Key::Numpad9 }, calcTextColor, btnColor, calcTextStr, "9");
+        handleButtonPress(window, buttons[3], { sf::Keyboard::Key::Slash }, calcTextColor, secondaryBtnColor, calcTextStr, "/");
+        handleButtonPress(window, buttons[4], { sf::Keyboard::Key::Num4, sf::Keyboard::Key::Numpad4 }, calcTextColor, btnColor, calcTextStr, "4");
+        handleButtonPress(window, buttons[5], { sf::Keyboard::Key::Num5, sf::Keyboard::Key::Numpad5 }, calcTextColor, btnColor, calcTextStr, "5");
+        handleButtonPress(window, buttons[6], { sf::Keyboard::Key::Num6, sf::Keyboard::Key::Numpad6 }, calcTextColor, btnColor, calcTextStr, "6");
+        handleButtonPress(window, buttons[7], { sf::Keyboard::Key::Multiply }, calcTextColor, secondaryBtnColor, calcTextStr, "*");
+        handleButtonPress(window, buttons[8], { sf::Keyboard::Key::Num1, sf::Keyboard::Key::Numpad1 }, calcTextColor, btnColor, calcTextStr, "1");
+        handleButtonPress(window, buttons[9], { sf::Keyboard::Key::Num2, sf::Keyboard::Key::Numpad2 }, calcTextColor, btnColor, calcTextStr, "2");
+        handleButtonPress(window, buttons[10], { sf::Keyboard::Key::Num3, sf::Keyboard::Key::Numpad3 }, calcTextColor, btnColor, calcTextStr, "3");
+        handleButtonPress(window, buttons[11], { sf::Keyboard::Key::Hyphen, sf::Keyboard::Key::Subtract }, calcTextColor, secondaryBtnColor, calcTextStr, "-");
+        handleButtonPress(window, buttons[12], { sf::Keyboard::Key::Num0, sf::Keyboard::Key::Numpad0 }, calcTextColor, btnColor, calcTextStr, "0");
+        handleButtonPress(window, buttons[13], { sf::Keyboard::Key::Period, sf::Keyboard::Key::Comma }, calcTextColor, btnColor, calcTextStr, ".");
+        handleButtonPress(window, buttons[14], { sf::Keyboard::Key::Backspace }, calcTextColor, secondaryBtnColor, calcTextStr, "←");
+        handleButtonPress(window, buttons[15], { sf::Keyboard::Key::Add }, calcTextColor, secondaryBtnColor, calcTextStr, "+");
+        handleButtonPress(window, buttons[16], {sf::Keyboard::Key::Enter, sf::Keyboard::Key::Equal}, calcTextColor, btnColor, calcTextStr, "=");
+        handleButtonPress(window, buttons[17], {}, calcTextColor, secondaryBtnColor, calcTextStr, "AC");
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num9) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad9) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[2].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-		    buttons[2].setFillColor(calcTextColor);
-        else
-			buttons[2].setFillColor(btnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Slash) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Slash) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[3].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[3].setFillColor(calcTextColor);
-        else
-			buttons[3].setFillColor(secondaryBtnColor);
-        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num4) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad4) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[4].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[4].setFillColor(calcTextColor);
-		else
-			buttons[4].setFillColor(btnColor);
-        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num5) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad5) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[5].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[5].setFillColor(calcTextColor);
-		else
-			buttons[5].setFillColor(btnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num6) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad6) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[6].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[6].setFillColor(calcTextColor);
-		else
-			buttons[6].setFillColor(btnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Multiply) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[7].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[7].setFillColor(calcTextColor);
-		else
-			buttons[7].setFillColor(secondaryBtnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad1) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[8].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[8].setFillColor(calcTextColor);
-        else
-			buttons[8].setFillColor(btnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad2) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[9].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[9].setFillColor(calcTextColor);
-        else
-			buttons[9].setFillColor(btnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad3) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[10].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[10].setFillColor(calcTextColor);
-        else
-			buttons[10].setFillColor(btnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Hyphen) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Subtract) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[11].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[11].setFillColor(calcTextColor);
-        else
-			buttons[11].setFillColor(secondaryBtnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad0) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[12].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[12].setFillColor(calcTextColor);
-        else
-			buttons[12].setFillColor(btnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Period) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Comma) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[13].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[13].setFillColor(calcTextColor);
-        else
-			buttons[13].setFillColor(btnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backspace) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[14].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[14].setFillColor(calcTextColor);
-        else
-			buttons[14].setFillColor(secondaryBtnColor);
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Add) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[15].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[15].setFillColor(calcTextColor);
-        else 
-			buttons[15].setFillColor(secondaryBtnColor);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::NumpadEnter) 
-            || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Equal) ||
-            (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[16].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[16].setFillColor(calcTextColor);
-        else
-			buttons[16].setFillColor(btnColor);
-        if((sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && buttons[17].getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))))
-			buttons[17].setFillColor(calcTextColor);
-		else
-			buttons[17].setFillColor(secondaryBtnColor);
 
         window.clear();
         window.draw(background);
