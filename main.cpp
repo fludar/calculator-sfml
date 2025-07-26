@@ -1,24 +1,26 @@
 ﻿#include <SFML/Graphics.hpp>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <optional>
 
-void Equal(std::string& calcTextStr){
-
-	for (int i = 0; i < calcTextStr.size(); i++)
-	{
+void Equal(std::string& calcTextStr) {
+    for (int i = 0; i < calcTextStr.size(); i++) {
         switch (calcTextStr[i]) {
         case '/':
             calcTextStr = "division";
-			return;
-		case '*':
-			calcTextStr = "multiplication";
-			return;
-		case '-':
-			calcTextStr = "subtraction";
-			return;
-		case '+':
-			calcTextStr = "addition";
-			return;
+            return;
+        case '*':
+            calcTextStr = "multiplication";
+            return;
+        case '-':
+            calcTextStr = "subtraction";
+            return;
+        case '+':
+            calcTextStr = "addition";
+            return;
         }
-	}
+    }
 }
 
 void handleButtonPress(
@@ -46,57 +48,56 @@ void handleButtonPress(
             calcTextStr.clear();
         }
         else if (buttonValue == "←") {
-        if (!calcTextStr.empty()) {
-            calcTextStr.pop_back();
+            if (!calcTextStr.empty()) {
+                calcTextStr.pop_back();
             }
         }
         else if (buttonValue == "=") {
             Equal(calcTextStr);
         }
-        else calcTextStr += buttonValue; 
+        else {
+            calcTextStr += buttonValue;
+        }
         wasPressed[buttonValue] = true;
     }
     else if (!isKeyPressed && !isMousePressed) {
         button.setFillColor(defaultColor);
-        wasPressed[buttonValue] = false; 
+        wasPressed[buttonValue] = false;
     }
 }
-
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({ 300, 500 }), "Calculator", sf::Style::Close);
 
-	sf::Vector2f padding(10.0f, 10.0f);
+    sf::Vector2f padding(10.0f, 10.0f);
 
     sf::RectangleShape background(sf::Vector2f(400.0f, 600.0f));
-	sf::Color bgColor(197, 209, 235, 255);
-	background.setFillColor(bgColor);
-	background.setPosition(sf::Vector2f(0.0f, 0.0f));
+    sf::Color bgColor(197, 209, 235, 255);
+    background.setFillColor(bgColor);
+    background.setPosition(sf::Vector2f(0.0f, 0.0f));
 
     const sf::Font font("FjallaOne-Regular.ttf");
 
-
     std::string calcTextStr = "";
     sf::Text calcText(font);
-	sf::Color calcTextColor(57, 91, 80, 255);
+    sf::Color calcTextColor(57, 91, 80, 255);
     calcText.setCharacterSize(60);
     calcText.setStyle(sf::Text::Regular);
-	calcText.setFillColor(calcTextColor);
-	calcText.setPosition(sf::Vector2f(0.0f + padding.x, 0.0f + padding.y));
+    calcText.setFillColor(calcTextColor);
+    calcText.setPosition(sf::Vector2f(0.0f + padding.x, 0.0f + padding.y));
 
     std::vector<sf::RectangleShape> buttons;
     sf::Vector2f buttonSize(62.5f, 62.5f);
     sf::Color btnColor(146, 175, 215, 255);
     sf::Color secondaryBtnColor(90, 118, 132, 255);
 
-	std::vector<sf::Text> buttonTexts;
-	sf::Color buttonTextColor(255, 255, 255, 255);
+    std::vector<sf::Text> buttonTexts;
+    sf::Color buttonTextColor(255, 255, 255, 255);
 
-	float posY = 100.0f;
-    for (int i = 0; i < 4; ++i)
+    float posY = 100.0f;
+    for (int i = 0; i < 5; ++i) 
     {
-
         for (int j = 0; j < 4; ++j)
         {
             sf::RectangleShape button(buttonSize);
@@ -107,16 +108,18 @@ int main()
         }
         posY = posY + 75.0f;
     }
-	std::unordered_map<int, std::string> buttonLabels = {
-		{0, "7"}, {1, "8"}, {2, "9"}, {3, "/"},
-		{4, "4"}, {5, "5"}, {6, "6"}, {7, "*"},
-		{8, "1"}, {9, "2"}, {10, "3"}, {11, "-"},
-		{12, "0"}, {13, "."}, {14, "as"}, {15, "+"}
-	};
+
+    std::unordered_map<int, std::wstring> buttonLabels = {
+        {0, L"7"}, {1, L"8"}, {2, L"9"}, {3, L"/"},
+        {4, L"4"}, {5, L"5"}, {6, L"6"}, {7, L"*"},
+        {8, L"1"}, {9, L"2"}, {10, L"3"}, {11, L"-"},
+        {12, L"0"}, {13, L"."}, {14, L"\u2190"}, {15, L" + "},
+        {16, L"="}, {17, L"("}, {18, L")"}, {19, L"AC"}
+    };
 
     posY = 100.0f;
     int count = 0;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 4; j++)
         {
@@ -125,41 +128,12 @@ int main()
             buttonText.setStyle(sf::Text::Regular);
             buttonText.setFillColor(buttonTextColor);
             buttonText.setString(buttonLabels[count]);
-            if (count == 14) {
-                buttonText.setString(sf::String(L"←"));
-            }
             buttonText.setPosition(sf::Vector2f(padding.x + j * (buttonSize.x + padding.x) + buttonSize.x / 2 - 5, posY + padding.y + buttonSize.y / 2 - 10));
             buttonTexts.push_back(buttonText);
-			count++;
+            count++;
         }
         posY = posY + 75.0f;
     }
-
-    sf::RectangleShape equalsButton(sf::Vector2f(buttonSize.x*3 + 20.0f, buttonSize.y));
-	equalsButton.setFillColor(btnColor);
-	equalsButton.setPosition(sf::Vector2f(padding.x, posY + padding.y));
-	buttons.push_back(equalsButton);
-
-	sf::Text equalsText(font);
-	equalsText.setCharacterSize(40);
-	equalsText.setStyle(sf::Text::Regular);
-	equalsText.setFillColor(buttonTextColor);
-	equalsText.setString("=");
-    equalsText.setPosition(sf::Vector2f(padding.x + (buttonSize.x * 3) / 2, posY - 15.0f + buttonSize.y / 2));
-	buttonTexts.push_back(equalsText);
-
-    sf::RectangleShape clearButton(buttonSize);
-    clearButton.setFillColor(secondaryBtnColor);
-    clearButton.setPosition(sf::Vector2f(padding.x + 3 * (buttonSize.x + padding.x), posY + padding.y));
-	buttons.push_back(clearButton);
-
-	sf::Text clearText(font);
-	clearText.setCharacterSize(18);
-    clearText.setStyle(sf::Text::Regular);
-    clearText.setFillColor(buttonTextColor);
-    clearText.setString("AC");
-    clearText.setPosition(sf::Vector2f(padding.x + (buttonSize.x * 8 - 22.0f) / 2, posY - 5.0f + padding.y / 2 + buttonSize.y / 2));
-    buttonTexts.push_back(clearText);
 
     while (window.isOpen())
     {
@@ -168,7 +142,7 @@ int main()
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
-	    calcText.setString(calcTextStr);
+        calcText.setString(calcTextStr);
 
         handleButtonPress(window, buttons[0], { sf::Keyboard::Key::Num7, sf::Keyboard::Key::Numpad7 }, calcTextColor, btnColor, calcTextStr, "7");
         handleButtonPress(window, buttons[1], { sf::Keyboard::Key::Num8, sf::Keyboard::Key::Numpad8 }, calcTextColor, btnColor, calcTextStr, "8");
@@ -186,13 +160,14 @@ int main()
         handleButtonPress(window, buttons[13], { sf::Keyboard::Key::Period, sf::Keyboard::Key::Comma }, calcTextColor, btnColor, calcTextStr, ".");
         handleButtonPress(window, buttons[14], { sf::Keyboard::Key::Backspace }, calcTextColor, btnColor, calcTextStr, "←");
         handleButtonPress(window, buttons[15], { sf::Keyboard::Key::Add }, calcTextColor, secondaryBtnColor, calcTextStr, "+");
-        handleButtonPress(window, buttons[16], {sf::Keyboard::Key::Enter, sf::Keyboard::Key::Equal}, calcTextColor, btnColor, calcTextStr, "=");
-        handleButtonPress(window, buttons[17], {}, calcTextColor, secondaryBtnColor, calcTextStr, "AC");
-
+        handleButtonPress(window, buttons[16], { sf::Keyboard::Key::Enter, sf::Keyboard::Key::Equal }, calcTextColor, btnColor, calcTextStr, "=");
+        handleButtonPress(window, buttons[17], { sf::Keyboard::Key::RBracket }, calcTextColor, btnColor, calcTextStr, "(");
+        handleButtonPress(window, buttons[18], { sf::Keyboard::Key::LBracket }, calcTextColor, btnColor, calcTextStr, ")");
+        handleButtonPress(window, buttons[19], {}, calcTextColor, secondaryBtnColor, calcTextStr, "AC");
 
         window.clear();
         window.draw(background);
-		window.draw(calcText);
+        window.draw(calcText);
         for (const auto& button : buttons)
         {
             window.draw(button);
