@@ -91,7 +91,7 @@ int main()
     background.setFillColor(bgColor);
     background.setPosition(sf::Vector2f(0.0f, 0.0f));
 
-    const sf::Font font("karla.ttf");
+    const sf::Font font("worksans.ttf");
 
     std::string calcTextStr = "";
     sf::Text calcText(font);
@@ -127,7 +127,7 @@ int main()
         {0, L"7"}, {1, L"8"}, {2, L"9"}, {3, L"/"},
         {4, L"4"}, {5, L"5"}, {6, L"6"}, {7, L"*"},
         {8, L"1"}, {9, L"2"}, {10, L"3"}, {11, L"-"},
-        {12, L"0"}, {13, L"."}, {14, L"\u2190"}, {15, L" + "},
+        {12, L"0"}, {13, L"."}, {14, L"←"}, {15, L" + "},
         {16, L"="}, {17, L"("}, {18, L")"}, {19, L"AC"}
     };
 
@@ -148,7 +148,8 @@ int main()
         }
         posY = posY + 75.0f;
     }
-
+    buttonTexts[15].setPosition(sf::Vector2f(buttonTexts[15].getPosition().x - 7.5f, buttonTexts[15].getPosition().y));
+    buttonTexts[19].setPosition(sf::Vector2f(buttonTexts[19].getPosition().x - 7.5f, buttonTexts[19].getPosition().y));
     while (window.isOpen())
     {
         while (const std::optional event = window.pollEvent())
