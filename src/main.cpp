@@ -66,6 +66,20 @@ void handleButtonPress(
     }
 }
 
+
+void textWrapping(sf::Text& calcText)
+{
+	unsigned int fontSize = calcText.getCharacterSize();
+    if (calcText.getLocalBounds().size.x > 250.0f && fontSize > 10.0f)
+    {
+		calcText.setCharacterSize(fontSize - 5);
+	}
+	else if (calcText.getLocalBounds().size.x < 180.0f && fontSize < 80.0f)
+	{
+		calcText.setCharacterSize(fontSize + 5);
+	}
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({ 300, 500 }), "Calculator", sf::Style::Close);
@@ -82,7 +96,7 @@ int main()
     std::string calcTextStr = "";
     sf::Text calcText(font);
     sf::Color calcTextColor(57, 91, 80, 255);
-    calcText.setCharacterSize(60);
+    calcText.setCharacterSize(80);
     calcText.setStyle(sf::Text::Regular);
     calcText.setFillColor(calcTextColor);
     calcText.setPosition(sf::Vector2f(0.0f + padding.x, 0.0f + padding.y));
@@ -167,7 +181,10 @@ int main()
 
         window.clear();
         window.draw(background);
+        
+		textWrapping(calcText);
         window.draw(calcText);
+
         for (const auto& button : buttons)
         {
             window.draw(button);
