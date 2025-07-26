@@ -2,7 +2,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 300, 500 }), "Calculator");
+    sf::RenderWindow window(sf::VideoMode({ 300, 500 }), "Calculator", sf::Style::Close);
 
 	sf::Vector2f padding(10.0f, 10.0f);
 
@@ -104,6 +104,94 @@ int main()
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad7))
+			buttons[0].setFillColor(calcTextColor);
+		else
+			buttons[0].setFillColor(btnColor);
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num8) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad8))
+			buttons[1].setFillColor(calcTextColor);
+        else 
+			buttons[1].setFillColor(btnColor);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num9) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad9))
+		    buttons[2].setFillColor(calcTextColor);
+        else
+			buttons[2].setFillColor(btnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Slash) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Slash))
+			buttons[3].setFillColor(calcTextColor);
+        else
+			buttons[3].setFillColor(secondaryBtnColor);
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num4) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad4))
+			buttons[4].setFillColor(calcTextColor);
+		else
+			buttons[4].setFillColor(btnColor);
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num5) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad5))
+			buttons[5].setFillColor(calcTextColor);
+		else
+			buttons[5].setFillColor(btnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num6) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad6))
+			buttons[6].setFillColor(calcTextColor);
+		else
+			buttons[6].setFillColor(btnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Multiply))
+			buttons[7].setFillColor(calcTextColor);
+		else
+			buttons[7].setFillColor(secondaryBtnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad1))
+			buttons[8].setFillColor(calcTextColor);
+        else
+			buttons[8].setFillColor(btnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad2))
+			buttons[9].setFillColor(calcTextColor);
+        else
+			buttons[9].setFillColor(btnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad3))
+			buttons[10].setFillColor(calcTextColor);
+        else
+			buttons[10].setFillColor(btnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Hyphen) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Subtract))
+			buttons[11].setFillColor(calcTextColor);
+        else
+			buttons[11].setFillColor(secondaryBtnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Numpad0))
+			buttons[12].setFillColor(calcTextColor);
+        else
+			buttons[12].setFillColor(btnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Period) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Comma))
+			buttons[13].setFillColor(calcTextColor);
+        else
+			buttons[13].setFillColor(btnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backspace))
+			buttons[14].setFillColor(calcTextColor);
+        else
+			buttons[14].setFillColor(secondaryBtnColor);
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Add))
+			buttons[15].setFillColor(calcTextColor);
+        else 
+			buttons[15].setFillColor(secondaryBtnColor);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::NumpadEnter) 
+            || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Equal))
+			buttons[16].setFillColor(calcTextColor);
+        else
+			buttons[16].setFillColor(btnColor);
+
+
 
         window.clear();
         window.draw(background);
