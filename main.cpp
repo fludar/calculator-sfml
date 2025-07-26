@@ -5,8 +5,8 @@ int main()
     sf::RenderWindow window(sf::VideoMode({ 300, 500 }), "Calculator");
 
     sf::RectangleShape background(sf::Vector2f(300.0f, 500.0f));
-
-	background.setFillColor(sf::Color::Cyan);
+	sf::Color bgColor(58, 114, 199, 255);
+	background.setFillColor(bgColor);
 	background.setPosition(sf::Vector2f(0.0f, 0.0f));
     while (window.isOpen())
     {
