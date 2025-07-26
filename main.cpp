@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+﻿#include <SFML/Graphics.hpp>
 
 int main()
 {
@@ -43,8 +43,15 @@ int main()
         }
         posY = posY + 75.0f;
     }
+	std::unordered_map<int, std::string> buttonLabels = {
+		{0, "7"}, {1, "8"}, {2, "9"}, {3, "/"},
+		{4, "4"}, {5, "5"}, {6, "6"}, {7, "*"},
+		{8, "1"}, {9, "2"}, {10, "3"}, {11, "-"},
+		{12, "0"}, {13, "."}, {14, "as"}, {15, "+"}
+	};
 
     posY = 100.0f;
+    int count = 0;
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
@@ -53,9 +60,13 @@ int main()
             buttonText.setCharacterSize(18);
             buttonText.setStyle(sf::Text::Regular);
             buttonText.setFillColor(buttonTextColor);
-            buttonText.setString(std::to_string(i + 1));
+            buttonText.setString(buttonLabels[count]);
+            if (count == 14) {
+                buttonText.setString(sf::String(L"←"));
+            }
             buttonText.setPosition(sf::Vector2f(padding.x + j * (buttonSize.x + padding.x) + buttonSize.x / 2 - 5, posY + padding.y + buttonSize.y / 2 - 10));
             buttonTexts.push_back(buttonText);
+			count++;
         }
         posY = posY + 75.0f;
     }
@@ -65,10 +76,26 @@ int main()
 	equalsButton.setPosition(sf::Vector2f(padding.x, posY + padding.y));
 	buttons.push_back(equalsButton);
 
+	sf::Text equalsText(font);
+	equalsText.setCharacterSize(18);
+	equalsText.setStyle(sf::Text::Regular);
+	equalsText.setFillColor(buttonTextColor);
+	equalsText.setString("=");
+    equalsText.setPosition(sf::Vector2f(padding.x + (buttonSize.x * 3 + 5.0f) / 2, posY + padding.y / 2 + buttonSize.y / 2));
+	buttonTexts.push_back(equalsText);
+
     sf::RectangleShape clearButton(buttonSize);
     clearButton.setFillColor(secondaryBtnColor);
     clearButton.setPosition(sf::Vector2f(padding.x + 3 * (buttonSize.x + padding.x), posY + padding.y));
 	buttons.push_back(clearButton);
+
+	sf::Text clearText(font);
+	clearText.setCharacterSize(18);
+    clearText.setStyle(sf::Text::Regular);
+    clearText.setFillColor(buttonTextColor);
+    clearText.setString("AC");
+    clearText.setPosition(sf::Vector2f(padding.x + (buttonSize.x * 8 - 22.0f) / 2, posY + padding.y / 2 + buttonSize.y / 2));
+    buttonTexts.push_back(clearText);
 
     while (window.isOpen())
     {
