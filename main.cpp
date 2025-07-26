@@ -184,7 +184,7 @@ int main()
         handleButtonPress(window, buttons[11], { sf::Keyboard::Key::Hyphen, sf::Keyboard::Key::Subtract }, calcTextColor, secondaryBtnColor, calcTextStr, "-");
         handleButtonPress(window, buttons[12], { sf::Keyboard::Key::Num0, sf::Keyboard::Key::Numpad0 }, calcTextColor, btnColor, calcTextStr, "0");
         handleButtonPress(window, buttons[13], { sf::Keyboard::Key::Period, sf::Keyboard::Key::Comma }, calcTextColor, btnColor, calcTextStr, ".");
-        handleButtonPress(window, buttons[14], { sf::Keyboard::Key::Backspace }, calcTextColor, secondaryBtnColor, calcTextStr, "←");
+        handleButtonPress(window, buttons[14], { sf::Keyboard::Key::Backspace }, calcTextColor, btnColor, calcTextStr, "←");
         handleButtonPress(window, buttons[15], { sf::Keyboard::Key::Add }, calcTextColor, secondaryBtnColor, calcTextStr, "+");
         handleButtonPress(window, buttons[16], {sf::Keyboard::Key::Enter, sf::Keyboard::Key::Equal}, calcTextColor, btnColor, calcTextStr, "=");
         handleButtonPress(window, buttons[17], {}, calcTextColor, secondaryBtnColor, calcTextStr, "AC");
