@@ -91,7 +91,7 @@ int main()
     background.setFillColor(bgColor);
     background.setPosition(sf::Vector2f(0.0f, 0.0f));
 
-    const sf::Font font("FjallaOne-Regular.ttf");
+    const sf::Font font("karla.ttf");
 
     std::string calcTextStr = "";
     sf::Text calcText(font);
