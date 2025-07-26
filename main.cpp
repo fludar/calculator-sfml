@@ -77,11 +77,11 @@ int main()
 	buttons.push_back(equalsButton);
 
 	sf::Text equalsText(font);
-	equalsText.setCharacterSize(18);
+	equalsText.setCharacterSize(40);
 	equalsText.setStyle(sf::Text::Regular);
 	equalsText.setFillColor(buttonTextColor);
 	equalsText.setString("=");
-    equalsText.setPosition(sf::Vector2f(padding.x + (buttonSize.x * 3 + 5.0f) / 2, posY + padding.y / 2 + buttonSize.y / 2));
+    equalsText.setPosition(sf::Vector2f(padding.x + (buttonSize.x * 3) / 2, posY - 15.0f + buttonSize.y / 2));
 	buttonTexts.push_back(equalsText);
 
     sf::RectangleShape clearButton(buttonSize);
@@ -94,7 +94,7 @@ int main()
     clearText.setStyle(sf::Text::Regular);
     clearText.setFillColor(buttonTextColor);
     clearText.setString("AC");
-    clearText.setPosition(sf::Vector2f(padding.x + (buttonSize.x * 8 - 22.0f) / 2, posY + padding.y / 2 + buttonSize.y / 2));
+    clearText.setPosition(sf::Vector2f(padding.x + (buttonSize.x * 8 - 22.0f) / 2, posY - 5.0f + padding.y / 2 + buttonSize.y / 2));
     buttonTexts.push_back(clearText);
 
     while (window.isOpen())
