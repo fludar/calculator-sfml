@@ -57,7 +57,13 @@ To build it:
 - Made with ❤️ using [SFML](https://www.sfml-dev.org/)
 - Uses the [Shunting Yard Algorithm](https://en.wikipedia.org/wiki/Shunting-yard_algorithm) for expression parsing
 
-
+## 📖 What did I learn?
+- How to create a GUI application using SFML
+- How to implement the Shunting Yard Algorithm in C++
+- How to handle user input with both keyboard and mouse
+- How to manage application state and events in a graphical application
+- How to structure a simple calculator application
+- How to use C++ standard libraries effectively in a GUI context
 
 ## 📄 License
 
