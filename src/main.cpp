@@ -1,16 +1,23 @@
 ﻿#include "../include/utils.h"
+#include "../include/worksans.h"
+#include <Windows.h>
 
-int main()
-{
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+
     sf::RenderWindow rwWindow(sf::VideoMode({ 300, 500 }), "Calculator", sf::Style::Close);
     sf::Vector2f vec2Padding(10.0f, 10.0f);
+
+    sf::Image appIcon;
+    appIcon.loadFromFile("resources/icon.png");
+    rwWindow.setIcon(appIcon);
 
     sf::RectangleShape rsBackground(sf::Vector2f(400.0f, 600.0f));
     sf::Color colBg(197, 209, 235, 255);
     rsBackground.setFillColor(colBg);
     rsBackground.setPosition(sf::Vector2f(0.0f, 0.0f));
 
-    const sf::Font fntMain("worksans.ttf");
+    sf::Font fntMain;
+    fntMain.openFromMemory(worksans, sizeof(worksans));
 
     std::string strCalcText = "";
     sf::Text txtCalc(fntMain);
@@ -93,4 +100,6 @@ int main()
 
         rwWindow.display();
     }
+
+	return 0;
 }
