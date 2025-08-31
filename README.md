@@ -14,6 +14,7 @@
   <a href="#build-instructions">Build Instructions</a> •
   <a href="#screenshot">Screenshot</a> •
   <a href="#credits">Credits</a> •
+  <a href="#what-did-i-learn">What did I learn?</a> •
   <a href="#license">License</a>
 </p>
 
